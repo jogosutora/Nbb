@@ -156,7 +156,7 @@ do
     end)
     
     Tabs.Main:AddButton({
-        Title = "Open Computer UI without Color Correction",
+        Title = "Open Computer UI ~ Remove Color Correction",
         Callback = function()
             fireclickdetector(workspace.Triggers.CamerasPC.ClickDetector)
             wait(0.2)
@@ -167,14 +167,13 @@ do
     -- Flash Toggles
     local SpamFlashToggle = Tabs.Main:AddToggle("SpamFlash", {
         Title = "Spam Flash",
-        Description = "Continuously triggers flash without cooldown",
+        Description = "Bypass cooldown",
         Default = false
     })
     
     -- Auto Flash Toggle
     local AutoFlashToggle = Tabs.Main:AddToggle("AutoFlash", {
         Title = "Auto Flash",
-        Description = "Automatically flash when Winterhorn spawns",
         Default = false
     })
 
@@ -338,7 +337,7 @@ do
     -- Spam Flash Loop
     task.spawn(function()
         while true do
-            wait(1)
+            wait(0.1)
             if Options.SpamFlash.Value then
                 game:GetService("ReplicatedStorage").RemoteEvents.Flash:FireServer()
             end
@@ -350,7 +349,7 @@ do
     task.spawn(function()
         workspace.DescendantAdded:Connect(function(desc)
             if Options.AutoFlash.Value and desc.Name == "Winterhorn" then
-                wait(1)
+                wait(0.2)
                 game:GetService("ReplicatedStorage").RemoteEvents.Flash:FireServer()
             end
         end)
