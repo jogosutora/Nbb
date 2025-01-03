@@ -4,7 +4,7 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 
 local Window = Fluent:CreateWindow({
     Title = "X Hub - NBTB • Open Source Version",
-    SubTitle = "real frfr",
+    SubTitle = "new update!1!1!",
     TabWidth = 130,
     Size = UDim2.fromOffset(480, 360),
     Acrylic = true,
@@ -25,35 +25,9 @@ Fluent:Notify({
     Duration = 5
 })
 
-local lockers = workspace:FindFirstChild("Lockers")
-
-if lockers then
-    for i = 1, 4 do
-        local locker = lockers:FindFirstChild(tostring(i))
-        if locker and locker:FindFirstChild("ClickDetect") then
-            local clickDetect = locker.ClickDetect
-
-            local closeSound = clickDetect:FindFirstChild("Close")
-            if closeSound and closeSound:IsA("Sound") then
-                closeSound.SoundId = "rbxassetid://8430024127"
-            end
-
-            local openSound = clickDetect:FindFirstChild("Open")
-            if openSound and openSound:IsA("Sound") then
-                openSound.SoundId = "rbxassetid://8430024127"
-            end
-        end
-    end
-end
-
 local itemPickup = workspace:FindFirstChild("ItemPickup")
 if itemPickup and itemPickup:IsA("Sound") then
     itemPickup.SoundId = "rbxassetid://320412149"
-end
-
-local flash = workspace:FindFirstChild("Flash")
-if flash and flash:IsA("Sound") then
-    flash.SoundId = "rbxassetid://7772283448"
 end
 
 local soundService = game:GetService("SoundService")
@@ -188,6 +162,20 @@ do
             wait(0.2)
             game:GetService("Lighting").ColorCorrection.Enabled = false
         end
+    })
+
+    -- Flash Toggles
+    local SpamFlashToggle = Tabs.Main:AddToggle("SpamFlash", {
+        Title = "Spam Flash",
+        Description = "Continuously triggers flash without cooldown",
+        Default = false
+    })
+    
+    -- Auto Flash Toggle
+    local AutoFlashToggle = Tabs.Main:AddToggle("AutoFlash", {
+        Title = "Auto Flash",
+        Description = "Automatically flash when Winterhorn spawns",
+        Default = false
     })
 
     -- Winterhorn ESP
@@ -345,6 +333,27 @@ do
             
             if Fluent.Unloaded then break end
         end
+    end)
+    
+    -- Spam Flash Loop
+    task.spawn(function()
+        while true do
+            wait(1)
+            if Options.SpamFlash.Value then
+                game:GetService("ReplicatedStorage").RemoteEvents.Flash:FireServer()
+            end
+            if Fluent.Unloaded then break end
+        end
+    end)
+    
+    -- Auto Flash Loop
+    task.spawn(function()
+        workspace.DescendantAdded:Connect(function(desc)
+            if Options.AutoFlash.Value and desc.Name == "Winterhorn" then
+                wait(1)
+                game:GetService("ReplicatedStorage").RemoteEvents.Flash:FireServer()
+            end
+        end)
     end)
     
     -- Winterhorn monitoring loop
