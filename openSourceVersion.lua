@@ -14,6 +14,7 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     Main = Window:AddTab({ Title = "Blizzard 1", Icon = "home" }),
+    btwo = Window:AddTab({ Title = "Blizzard 2", Icon = "map" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
@@ -36,6 +37,13 @@ local cameraStatic = soundService:FindFirstChild("Camera static")
 if cameraStatic then
     cameraStatic.Volume = 0
 end
+
+Tabs.btwo:AddButton({
+    Title = "Execute Blizzard 2 Script",
+    Callback = function()
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/jogosutora/Nbb/refs/heads/main/blizzardtwo.lua"))()
+    end
+})
 
 -- Main Features
 do
